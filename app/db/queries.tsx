@@ -1,7 +1,8 @@
 'use server';
 
-import { auth, youtube } from '@googleapis/youtube';
-import { sql } from './postgres';
+import { youtube, auth } from '@googleapis/youtube';
+import supabase from './postgres';
+
 import {
   unstable_cache as cache,
   unstable_noStore as noStore,
@@ -10,7 +11,7 @@ import {
 let googleAuth = new auth.GoogleAuth({
   credentials: {
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY,
+    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   },
   scopes: ['https://www.googleapis.com/auth/youtube.readonly'],
 });
@@ -21,31 +22,31 @@ let yt = youtube({
 });
 
 export async function getBlogViews() {
-  if (!process.env.POSTGRES_URL) {
-    return [];
+  noStore();
+  let { data: views, error } = await supabase
+    .from('views')
+    .select('count');
+
+  if (error) {
+    throw error;
   }
 
-  noStore();
-  let views = await sql`
-    SELECT count
-    FROM views
-  `;
-
-  return views.reduce((acc, curr) => acc + Number(curr.count), 0);
+  return views?.reduce((acc, curr) => acc + Number(curr.count), 0) || 0;
 }
 
 export async function getViewsCount(): Promise<
   { slug: string; count: number }[]
 > {
-  if (!process.env.POSTGRES_URL) {
-    return [];
+  noStore();
+  let { data: views, error } = await supabase
+    .from('views')
+    .select('slug, count');
+
+  if (error) {
+    throw error;
   }
 
-  noStore();
-  return sql`
-    SELECT slug, count
-    FROM views
-  `;
+  return views || [];
 }
 
 export const getLeeYouTubeSubs = cache(
@@ -55,8 +56,8 @@ export const getLeeYouTubeSubs = cache(
       part: ['statistics'],
     });
 
-    let channel = response.data.items![0];
-    return Number(channel?.statistics?.subscriberCount).toLocaleString();
+    let channel = response.data.items?.[0];
+    return Number(channel?.statistics?.subscriberCount || 0).toLocaleString();
   },
   ['leerob-youtube-subs'],
   {
@@ -71,8 +72,8 @@ export const getVercelYouTubeSubs = cache(
       part: ['statistics'],
     });
 
-    let channel = response.data.items![0];
-    return Number(channel?.statistics?.subscriberCount).toLocaleString();
+    let channel = response.data.items?.[0];
+    return Number(channel?.statistics?.subscriberCount || 0).toLocaleString();
   },
   ['vercel-youtube-subs'],
   {
@@ -81,15 +82,16 @@ export const getVercelYouTubeSubs = cache(
 );
 
 export async function getGuestbookEntries() {
-  if (!process.env.POSTGRES_URL) {
-    return [];
+  noStore();
+  let { data: entries, error } = await supabase
+    .from('guestbook')
+    .select('id, body, created_by, updated_at')
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (error) {
+    throw error;
   }
 
-  noStore();
-  return sql`
-    SELECT id, body, created_by, updated_at
-    FROM guestbook
-    ORDER BY created_at DESC
-    LIMIT 100
-  `;
+  return entries || [];
 }
