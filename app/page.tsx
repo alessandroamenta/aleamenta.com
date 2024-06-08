@@ -8,20 +8,19 @@ import Image from 'next/image';
 //import filming from 'public/images/home/filming.jpg';
 //import meetups from 'public/images/home/meetups.jpg';
 //import vercel from 'public/images/home/vercel.jpg';
-import building from 'public/images/home/building.jpeg';
+import building from 'public/images/home/building.png';
 import reading from 'public/images/home/reading.jpeg';
-import github from 'public/images/home/github.jpeg';
+import github from 'public/images/home/github.png';
+import paulg from 'public/images/home/paulg.png';
+import runclub from 'public/images/home/runclub.jpeg';
 import running from 'public/images/home/running.jpeg';
 import hustling from 'public/images/home/hustling.jpeg';
 import cooking from 'public/images/home/cooking.jpeg';
 import avatar from 'app/avatar.jpg';
+import avatar1 from 'app/avatar1.png';
 import ViewCounter from 'app/blog/view-counter';
 import { PreloadResources } from 'app/preload';
-import {
-  getLeeYouTubeSubs,
-  getVercelYouTubeSubs,
-  getViewsCount,
-} from 'app/db/queries';
+import { getLeeYouTubeSubs, getVercelYouTubeSubs, getViewsCount } from 'app/db/queries';
 
 function Badge(props) {
   return (
@@ -69,10 +68,8 @@ function ChannelLink({ img, link, name }) {
               className="h-16 w-16 rounded-full border border-neutral-200 dark:border-neutral-700"
               priority
             />
-            <div className="relative -right-10 -top-6 inline-flex h-6 w-6 items-center rounded-full border border-neutral-200 bg-white p-1 dark:border-neutral-700">
-              <svg width="15" height="11" role="img" aria-label="YouTube logo">
-                <use href="/sprite.svg#youtube" />
-              </svg>
+            <div className="relative -right-10 -top-6 inline-flex h-6 w-6 items-center rounded-full border border-neutral-200 bg-black p-1 dark:border-neutral-700">
+              <img  role="img" aria-label="YouTube logo" src="/x.jpg" />
             </div>
           </div>
           <div className="flex flex-col">
@@ -80,7 +77,6 @@ function ChannelLink({ img, link, name }) {
               {name}
             </p>
             <Suspense fallback={<p className="h-6" />}>
-              <Subs name={name} />
             </Suspense>
           </div>
         </div>
@@ -92,21 +88,7 @@ function ChannelLink({ img, link, name }) {
   );
 }
 
-async function Subs({ name }: { name: string }) {
-  noStore();
-  let subscribers;
-  if (name === '@ale_amenta') {
-    subscribers = await getLeeYouTubeSubs();
-  } else {
-    subscribers = await getVercelYouTubeSubs();
-  }
 
-  return (
-    <p className="text-neutral-600 dark:text-neutral-400">
-      {subscribers} subscribers
-    </p>
-  );
-}
 
 function BlogLink({ slug, name }) {
   return (
@@ -143,27 +125,102 @@ export default function Page() {
       <h1 className="mb-8 text-2xl font-medium tracking-tighter">
         hey, I'm Ale 👋
       </h1>
-      <p className="prose prose-neutral dark:prose-invert">
+      <p className="mb-4 prose prose-neutral dark:prose-invert">
         {`I'm a self-taught full-stack engineer and indie hacker. I currently `}
         <Link href="/work">work</Link>
         {` as an AI Engineer at `}
         <span className="not-prose">
           <Badge href="https://www.nexler.nl/">
-            <svg
-              width="13"
-              height="11"
-              role="img"
-              aria-label="Vercel logo"
-              className="mr-1 inline-flex"
-            >
-              <use href="/sprite.svg#vercel" />
-            </svg>
+
             Nexler
           </Badge>
         </span>
-        {`, a dutch startup where I help automate all boring things with AI.`}
+        {`, a dutch startup where I help automate all boring tasks using AI. `}
 
-        {`I also run a dev agency where I partner with founders and soloprenours to build proof of concepts and MVPs. On nights and weekeds, I'm building my own indie projects. I enjoy running, travelling and reading books. Here are some images of momenets doing my favorite things.`}
+        {`I also run a `}
+        <Link href="https://4amdev.framer.ai/">dev agency </Link>
+        {`where I partner with solopreneurs and startup founders to build proof of concepts and MVPs.`}
+      </p>
+      <p className="prose prose-neutral dark:prose-invert">
+        {`On nights and weekeds, I spend my time building my own indie projects. I'm always working on something new and try to ship a new product on a monthly cadence. I enjoy running, travelling, cooking (duh, I'm Italian 🙄) and reading. Here are some random recent images of moments spent doing my favorite things. :)`}
+      </p>
+      <div className="grid grid-cols-2 grid-rows-4 sm:grid-rows-3 sm:grid-cols-3 gap-4 my-8">
+        <div className="relative h-40">
+          <Image
+            alt="Coding up my indie startups"
+            src={building}
+            fill
+            sizes="(max-width: 768px) 213px, 33vw"
+            priority
+            className="rounded-lg object-cover"
+          />
+        </div>
+        <div className="relative sm:row-span-2 row-span-1">
+          <Image
+            alt="An essay i love from paulg"
+            src={paulg}
+            fill
+            sizes="(max-width: 768px) 213px, 33vw"
+            priority
+            className="rounded-lg object-cover object-top sm:object-center"
+          />
+        </div>
+        <div className="relative">
+          <Image
+            alt="Me and the run club"
+            src={runclub}
+            fill
+            sizes="(max-width: 768px) 213px, 33vw"
+            priority
+            className="rounded-lg object-cover"
+          />
+        </div>
+        <div className="relative row-span-2">
+          <Image
+            alt="What my solo running route in amsterdam looks like"
+            src={running}
+            fill
+            sizes="(max-width: 768px) 213px, 33vw"
+            priority
+            className="rounded-lg object-cover sm:object-center"
+          />
+        </div>
+        <div className="relative row-span-2">
+          <Image
+            alt="Gym day, every day"
+            src={hustling}
+            fill
+            sizes="(max-width: 768px) 213px, 33vw"
+            priority
+            className="rounded-lg object-cover"
+          />
+        </div>
+        <div className="relative h-40">
+          <Image
+            alt="Lasagna, made how my grandma taught me to make it."
+            src={cooking}
+            fill
+            sizes="(max-width: 768px) 213px, 33vw"
+            priority
+            className="rounded-lg object-cover"
+          />
+        </div>
+      </div>
+      <div className="prose prose-neutral dark:prose-invert">
+      <p>
+        Some tech I love building with:
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <Badge href="https://nextjs.org">
+          <img
+            alt="Next.js logomark"
+            src="/next-logo.svg"
+            className="!mr-1"
+            width="14"
+            height="14"
+          />
+          Next.js
+        </Badge>
         <Badge href="https://react.dev">
           <svg
             width="14"
@@ -176,109 +233,58 @@ export default function Page() {
           </svg>
           React
         </Badge>
-        .
-      </p>
-      <div className="grid grid-cols-2 grid-rows-4 sm:grid-rows-3 sm:grid-cols-3 gap-4 my-8">
-        <div className="relative h-40">
-          <Image
-            alt="Me speaking on stage at React Summit about the future of Next.js"
-            src={building}
-            fill
-            sizes="(max-width: 768px) 213px, 33vw"
-            priority
-            className="rounded-lg object-cover"
+        <Badge>
+          <img
+            alt="python logo"
+            src="/python.png"
+            className="!mr-1"
+            width="14"
+            height="14"
           />
-        </div>
-        <div className="relative sm:row-span-2 row-span-1">
-          <Image
-            alt="Me standing on stage at Reactathon delivering the keynote"
-            src={reading}
-            fill
-            sizes="(max-width: 768px) 213px, 33vw"
-            priority
-            className="rounded-lg object-cover object-top sm:object-center"
+          Python
+        </Badge>
+        <Badge>
+          <img
+            alt="ts logomark"
+            src="/typescript.png"
+            className="!mr-1"
+            width="14"
+            height="14"
           />
-        </div>
-        <div className="relative">
-          <Image
-            alt="Me and Guillermo Rauch on stage for Vercel Ship, answering questions from the Next.js community"
-            src={github}
-            fill
-            sizes="(max-width: 768px) 213px, 33vw"
-            priority
-            className="rounded-lg object-cover"
+          Typescript
+        </Badge>
+        <Badge href="https://ui.shadcn.com/">
+          <img
+            alt="shadcn logomark"
+            src="/shadcn.png"
+            className="!mr-1"
+            width="14"
+            height="14"
           />
-        </div>
-        <div className="relative row-span-2">
-          <Image
-            alt="Me, Lydia, and Delba filming the Next.js Conf keynote"
-            src={running}
-            fill
-            sizes="(max-width: 768px) 213px, 33vw"
-            priority
-            className="rounded-lg object-cover sm:object-center"
+          Shacn-ui
+        </Badge>
+        <Badge href="https://supabase.com/">
+          <img
+            alt="supabase logomark"
+            src="/supabase.png"
+            className="!mr-1"
+            width="14"
+            height="14"
           />
-        </div>
-        <div className="relative row-span-2">
-          <Image
-            alt="My badge on top of a pile of badges from a Vercel meetup we held"
-            src={hustling}
-            fill
-            sizes="(max-width: 768px) 213px, 33vw"
-            priority
-            className="rounded-lg object-cover"
-          />
-        </div>
-        <div className="relative h-40">
-          <Image
-            alt="Me standing on stage at SmashingConf giving a talk about my optimism for the web"
-            src={cooking}
-            fill
-            sizes="(max-width: 768px) 213px, 33vw"
-            priority
-            className="rounded-lg object-cover"
-          />
-        </div>
+          Supabase
+        </Badge>
       </div>
-      <div className="prose prose-neutral dark:prose-invert">
-        <p>
-          Some tech I love building with: 
-          <Badge href="https://nextjs.org">
-            <svg
-              width="14"
-              height="14"
-              role="img"
-              aria-label="Next.js logo"
-              className="!mr-1"
-            >
-              <use href="/sprite.svg#nextjs" />
-            </svg>
-            Next.js
-          </Badge>
-          <Badge href="https://react.dev">
-            <svg
-              width="14"
-              height="14"
-              role="img"
-              aria-label="React logo"
-              className="!mr-1"
-            >
-              <use href="/sprite.svg#react" />
-            </svg>
-            React
-          </Badge>
-        </p>
-      </div>
+    </div>
       <div className="my-8 flex w-full flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <ChannelLink
           img={avatar}
-          name="@leerob"
-          link="https://www.youtube.com/@leerob"
+          name="@ale_amenta"
+          link="https://x.com/ale_amenta"
         />
         <ChannelLink
-          img={running}
-          name="@vercel"
-          link="https://www.youtube.com/@vercelhq"
+          img={avatar1}
+          name="@alessandroamenta1"
+          link="https://medium.com/@alessandroamenta1"
         />
       </div>
       <div className="prose prose-neutral dark:prose-invert">

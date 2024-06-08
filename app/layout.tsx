@@ -10,15 +10,15 @@ import { SandpackCSS } from './blog/[slug]/sandpack';
 export const metadata: Metadata = {
   metadataBase: new URL('https://leerob.io'),
   title: {
-    default: 'Lee Robinson',
-    template: '%s | Lee Robinson',
+    default: 'Alessandro Amenta',
+    template: '%s | Alessandro Amenta',
   },
-  description: 'Developer, writer, and creator.',
+  description: 'Developer, indie-hacker.',
   openGraph: {
-    title: 'Lee Robinson',
-    description: 'Developer, writer, and creator.',
-    url: 'https://leerob.io',
-    siteName: 'Lee Robinson',
+    title: 'Alessandro Amenta',
+    description: 'Developer, indie-hacker.',
+    url: 'https://aleamenta.com',
+    siteName: 'Alessandro Amenta',
     locale: 'en_US',
     type: 'website',
   },
@@ -36,10 +36,6 @@ export const metadata: Metadata = {
   twitter: {
     title: 'Lee Robinson',
     card: 'summary_large_image',
-  },
-  verification: {
-    google: 'eZSdmzAXlLkKhNJzfgwDqWORghxnJ8qR9_CHdAh5-xw',
-    yandex: '14d2e73487fa6c71',
   },
 };
 
