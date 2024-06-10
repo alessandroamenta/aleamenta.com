@@ -11,6 +11,7 @@ import Image from 'next/image';
 import building from 'public/images/home/building.png';
 import reading from 'public/images/home/reading.jpeg';
 import github from 'public/images/home/github.png';
+import githubpic from 'public/images/home/githubpic.png';
 import paulg from 'public/images/home/paulg.png';
 import runclub from 'public/images/home/runclub.jpeg';
 import running from 'public/images/home/running.jpeg';
@@ -20,7 +21,7 @@ import avatar from 'app/avatar.jpg';
 import avatar1 from 'app/avatar1.png';
 import ViewCounter from 'app/blog/view-counter';
 import { PreloadResources } from 'app/preload';
-import { getLeeYouTubeSubs, getVercelYouTubeSubs, getViewsCount } from 'app/db/queries';
+import { getViewsCount } from 'app/db/queries';
 
 function Badge(props) {
   return (
@@ -49,7 +50,7 @@ function ArrowIcon() {
   );
 }
 
-function ChannelLink({ img, link, name }) {
+function ChannelLink({ img, link, name, logo }) {
   return (
     <div className="group flex w-full">
       <a
@@ -68,8 +69,19 @@ function ChannelLink({ img, link, name }) {
               className="h-16 w-16 rounded-full border border-neutral-200 dark:border-neutral-700"
               priority
             />
-            <div className="relative -right-10 -top-6 inline-flex h-6 w-6 items-center rounded-full border border-neutral-200 bg-black p-1 dark:border-neutral-700">
-              <img  role="img" aria-label="YouTube logo" src="/x.jpg" />
+            <div
+              className="relative -right-10 -top-6 inline-flex h-6 w-6 items-center rounded-full border border-neutral-200 p-1 dark:border-neutral-700"
+              style={{ backgroundColor: logo === 'linkedin' ? '#0077B5' : 'black' }}
+            >
+            {logo === 'twitter' ? (
+                <img role="img" aria-label="twitter logo" src="/x.jpg" />
+              ) : logo === 'medium' ? (
+                <img role="img" aria-label="medium logo" src="/medium.png" />
+              ) : logo === 'linkedin' ? (
+                <img role="img" aria-label="linkedin logo" src="/linkedin.png" />
+              ) : logo === 'github' ? (
+                <img role="img" aria-label="github logo" src="/github.png" />
+              ) : null}
             </div>
           </div>
           <div className="flex flex-col">
@@ -206,7 +218,7 @@ export default function Page() {
           />
         </div>
       </div>
-      <div className="prose prose-neutral dark:prose-invert">
+      <div className="mb-4 prose prose-neutral dark:prose-invert">
       <p>
         Some tech I love building with:
       </p>
@@ -275,108 +287,57 @@ export default function Page() {
         </Badge>
       </div>
     </div>
-      <div className="my-8 flex w-full flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-        <ChannelLink
-          img={avatar}
-          name="@ale_amenta"
-          link="https://x.com/ale_amenta"
-        />
-        <ChannelLink
-          img={avatar1}
-          name="@alessandroamenta1"
-          link="https://medium.com/@alessandroamenta1"
-        />
-      </div>
-      <div className="prose prose-neutral dark:prose-invert">
-        <p>
-          Over the past decade, I've written content on my blog and newsletter.
-          I try to keep things simple. You'll find writing about technologies
-          I'm interested in at the time, or how I'm learning and growing in my
-          career, sharing knowledge along the way.
-        </p>
-      </div>
-      <div className="my-8 flex w-full flex-col space-y-4">
-        <BlogLink
-          name="What Makes A Great Developer Experience?"
-          slug="developer-experience"
-        />
-        <BlogLink name="What is Developer Relations?" slug="devrel" />
-        <BlogLink name="The Story of Heroku" slug="heroku" />
-      </div>
-      <div className="prose prose-neutral dark:prose-invert">
-        <p>
-          I invest small angel checks into early stage startups building tools
-          for developers.
-        </p>
-      </div>
-      <div className="my-8 flex h-14 w-full flex-row space-x-2 overflow-x-auto">
-        <div className="flex items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
-          <a href="https://linear.app">
-            <svg width="78" height="20" role="img" aria-label="Linear logo">
-              <use href="/sprite.svg#linear" />
-            </svg>
-          </a>
-        </div>
-        <div className="flex items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
-          <a href="https://supabase.com">
-            <svg width="100" height="19" role="img" aria-label="Supabase logo">
-              <use href="/sprite.svg#supabase" />
-            </svg>
-          </a>
-        </div>
-        <div className="flex items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
-          <a href="https://www.makeswift.com/blog/makeswift-is-joining-bigcommerce">
-            <svg width="96" height="19" role="img" aria-label="Makeswift logo">
-              <use href="/sprite.svg#makeswift" />
-            </svg>
-          </a>
-        </div>
-        <div className="flex items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
-          <a href="https://resend.com">
-            <svg width="70" height="17" role="img" aria-label="Resend logo">
-              <use href="/sprite.svg#resend" />
-            </svg>
-          </a>
-        </div>
-        <div className="flex items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-800">
-          <a href="https://bun.sh">
-            <svg width="35" height="27" role="img" aria-label="Bun logo">
-              <use href="/sprite.svg#bun" />
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div className="prose prose-neutral dark:prose-invert">
-        <p>
-          I've worked with and advised companies on{' '}
-          <Link href="/blog/developer-marketing">developer marketing</Link>,{' '}
-          <Link href="/blog/devrel">developer relations</Link>, building
-          open-source communities, product-led growth, and more.
-        </p>
-      </div>
+    <div className="mb-2 prose prose-neutral dark:prose-invert">
+      <p>
+        Posting daily on X and writing tech articles on Medium monthly. Mostly about my learnings as a self-taught developer and the projects I'm building :)
+      </p>
+      <div className="flex flex-wrap gap-2">
+    </div>
+    </div>
+    <div className="my-8 flex flex-col space-y-4">
+  <div className="flex space-x-4">
+    <ChannelLink
+      img={avatar}
+      name="@ale_amenta"
+      link="https://x.com/ale_amenta"
+      logo="twitter"
+    />
+    <ChannelLink
+      img={avatar1}
+      name="@alessandroamenta1"
+      link="https://medium.com/@alessandroamenta1"
+      logo="medium"
+    />
+  </div>
+  <div className="flex space-x-4">
+    <ChannelLink
+      img={githubpic}
+      name="@alessandroamenta"
+      link="https://github.com/alessandroamenta"
+      logo="github"
+    />
+    <ChannelLink
+      img={avatar1}
+      name="Alessandro Amenta"
+      link="https://www.linkedin.com/in/alessandro-amenta/"
+      logo="linkedin"
+    />
+  </div>
+</div>
+
       <ul className="font-sm mt-8 flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
         <li>
           <a
             className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://twitter.com/leeerob"
+            href="https://x.com/ale_amenta"
           >
             <ArrowIcon />
             <p className="ml-2 h-7">follow me</p>
           </a>
         </li>
-        <li>
-          <a
-            className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
-            rel="noopener noreferrer"
-            target="_blank"
-            href="https://leerob.substack.com"
-          >
-            <ArrowIcon />
-            <p className="ml-2 h-7">get email updates</p>
-          </a>
-        </li>
+
       </ul>
     </section>
   );
