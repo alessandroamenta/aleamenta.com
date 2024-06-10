@@ -22,7 +22,6 @@ import avatar1 from 'app/avatar1.png';
 import { PreloadResources } from 'app/preload';
 import { getViewsCount } from 'app/db/queries';
 
-
 function Badge(props) {
   return (
     <a
