@@ -32,8 +32,9 @@ export async function saveGuestbookEntry(formData: FormData) {
   let session = await getSession();
   let email = session.user?.email as string;
   let created_by = session.user?.name as string;
+  console.log('session', session);
 
-  if (!session.user) {
+  if (!session.user || !email) {
     throw new Error('Unauthorized');
   }
 
@@ -55,24 +56,9 @@ export async function saveGuestbookEntry(formData: FormData) {
     });
 
   revalidatePath('/guestbook');
-
-  let data = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_SECRET}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: 'guestbook@leerob.io',
-      to: 'me@leerob.io',
-      subject: 'New Guestbook Entry',
-      html: `<p>Email: ${email}</p><p>Message: ${body}</p>`,
-    }),
-  });
-
-  let response = await data.json();
-  console.log('Email sent', response);
 }
+
+
 
 export async function deleteGuestbookEntries(selectedEntries: string[]) {
   let session = await getSession();

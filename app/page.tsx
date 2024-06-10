@@ -138,8 +138,7 @@ export default function Page() {
         hey, I'm Ale 👋
       </h1>
       <p className="mb-4 prose prose-neutral dark:prose-invert">
-        {`I'm a self-taught full-stack engineer and indie hacker. I currently `}
-        <Link href="/work">work</Link>
+        {`I'm a self-taught full-stack engineer and indie hacker. I currently work`}
         {` as an AI Engineer at `}
         <span className="not-prose">
           <Badge href="https://www.nexler.nl/">
